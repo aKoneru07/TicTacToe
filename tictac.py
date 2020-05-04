@@ -6,7 +6,7 @@ import random
 
 GAME = 0
 states = set()
-f = {"x" : max, "o":min}    #function
+f = {"x": max, "o": min}    #function
 switchP = {"x" : "o", "o" : "x"}  #Switch player
 win = {1 : "x is the WINNER", -1: "o is the WINNER", 0 : "IT IS A TIE"}
 
@@ -22,22 +22,14 @@ def score_test(board, player):
         x+=3
     if not "." in board:
         return 0
-    return 7        ###PLAY = 7###  "PLAY"
-
-def recur(board, player):
-    if not score_test(board, player) == 7:
-        global GAME, states
-        states.add(board)
-        GAME+=1
-        return
-    for r in valid_moves(board,player):
-        recur(r, switchP[player])
+    return 7                                        # PLAY = 7  "PLAY"
 
 def make_move(board, player):
     r = (f[player]([minmax(r, switchP[player], r) for r in valid_moves(board, player)]))
+    print(r)
     return r[2]
 
-def valid_moves(board, player):     #RETURNS list of possible boards post-move
+def valid_moves(board, player):                     # RETURNS list of possible boards post-move
     l = []
     for x in range(9):
         if board[x] == ".":
@@ -47,8 +39,8 @@ def valid_moves(board, player):     #RETURNS list of possible boards post-move
 def minmax(board, player, par):
     score = score_test(board,player)
     if not score == 7:
-        return (score, random.random(), par)      #Returns (SCORE, random, board)
-    return (f[player]([minmax(r, switchP[player], par) for r in valid_moves(board,player)]))
+        return (score, random.random(), par)        # Returns (SCORE, random, board)
+    return f[player]([minmax(r, switchP[player], par) for r in valid_moves(board,player)])
 
 def hum_move(b, pos, ply):
     return (b[0:pos-1] + ply + b[pos::])
